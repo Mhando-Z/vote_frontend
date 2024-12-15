@@ -8,6 +8,24 @@ import { Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { Spinner } from "react-activity";
 
+const selection = [
+  {
+    title: "I am here to Vote",
+    icon: "",
+    path: "",
+  },
+  {
+    title: "I am here for results",
+    icon: "",
+    path: "",
+  },
+  {
+    title: "Election processes",
+    icon: "",
+    path: "",
+  },
+];
+
 function Home() {
   const router = useRouter();
   const [present, setPresent] = useState(false);
@@ -76,19 +94,60 @@ function Home() {
     <div className="flex flex-col items-center min-h-screen bg-green-50  justify-center">
       <div className="flex gap-y-4 flex-col items-center">
         <AnimatedLogo />
-        <h1 className="text-3xl md:text-4xl font-medium font-roboto">
+        <motion.h1
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 1 }}
+          transition={{ delay: 0.4, duration: 0.7 }}
+          className="text-3xl md:text-4xl font-medium font-roboto"
+        >
           Online Voting System
-        </h1>
-        <p className="fo">Lets make it fair and square</p>
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 1 }}
+          transition={{ delay: 0.5, duration: 0.7 }}
+          className=""
+        >
+          Lets make it fair and square
+        </motion.p>
+      </div>
+      {/* choice selection */}
+      <div className="flex flex-col mx-auto container items-center mt-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+          {selection?.map((dt, index) => {
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 1 }}
+                transition={{ delay: 0.2 * index, duration: 0.7 }}
+                key={index}
+                className="p-10 bg-white ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3"
+              >
+                <h1>{dt?.title}</h1>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
       {/* login section */}
       <div className="flex md:w-[700px] px-2 w-full flex-col gap-4 mt-10">
         <div className="">
-          <h1 className="font-Raleway text-2xl md:text-3xl"> Sign in</h1>
+          <motion.h1
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            transition={{ delay: 0.6, duration: 0.7 }}
+            className="font-Raleway text-2xl md:text-3xl"
+          >
+            Sign in
+          </motion.h1>
         </div>
         {/* login form */}
         <form onSubmit={handleLogin} className="space-y-6">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            transition={{ delay: 1, duration: 0.7 }}
+          >
             <label
               htmlFor="email"
               className="block text-sm md:text-md font-medium leading-6 text-gray-900 dark:text-gray-400"
@@ -98,7 +157,7 @@ function Home() {
             <div className="mt-2">
               <motion.input
                 initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "100%" }}
+                whileInView={{ opacity: 1, width: "100%" }}
                 whileFocus={{ width: [0, "100%"] }}
                 transition={{
                   duration: 0.5,
@@ -113,9 +172,13 @@ function Home() {
                 className="block w-full px-3 py-2 text-gray-900 border-b-2 border-green-600  bg-inherit  outline-none  placeholder:text-gray-400  sm:text-sm sm:leading-6"
               />
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            transition={{ delay: 1.5, duration: 0.7 }}
+          >
             <div className="flex items-center justify-between">
               <label
                 htmlFor="password"
@@ -134,7 +197,7 @@ function Home() {
             <div className="relative mt-2">
               <motion.input
                 initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "100%" }}
+                whileInView={{ opacity: 1, width: "100%" }}
                 whileFocus={{ width: [0, "100%"] }}
                 transition={{
                   duration: 0.5,
@@ -160,15 +223,20 @@ function Home() {
                 )}
               </button>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="md:flex md:justify-end w-full md:items-end">
+          <motion.div
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 1 }}
+            transition={{ delay: 2, duration: 0.7 }}
+            className="md:flex md:justify-end w-full md:items-end"
+          >
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", ease: "easeOut" }}
               type="submit"
-              className="flex rounded-md w-full md:w-[100px] justify-center   bg-green-600 px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700  focus:ring-offset-2 "
+              className="flex rounded-md w-full md:w-[100px] justify-center bg-green-600 px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700  focus:ring-offset-2 "
             >
               {loading ? (
                 <div className="flex items-center  justify-center cursor-not-allowed">
@@ -178,7 +246,7 @@ function Home() {
                 <span className="relative z-10">Sign in</span>
               )}
             </motion.button>
-          </div>
+          </motion.div>
         </form>
       </div>
     </div>
