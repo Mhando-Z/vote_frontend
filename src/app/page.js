@@ -113,7 +113,7 @@ function Home() {
       </div>
       {/* choice selection */}
       <div className="flex flex-col mx-auto container items-center mt-5">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-5">
           {selection?.map((dt, index) => {
             return (
               <motion.div
@@ -121,9 +121,9 @@ function Home() {
                 whileInView={{ opacity: 1, y: 1 }}
                 transition={{ delay: 0.2 * index, duration: 0.7 }}
                 key={index}
-                className="p-10 bg-white ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3"
+                className="md:p-10 p-1 sm:p-5  bg-white ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3"
               >
-                <h1>{dt?.title}</h1>
+                <h1 className="text-center">{dt?.title}</h1>
               </motion.div>
             );
           })}
@@ -157,7 +157,7 @@ function Home() {
             <div className="mt-2">
               <motion.input
                 initial={{ opacity: 0, width: 0 }}
-                whileInView={{ opacity: 1, width: "100%" }}
+                animate={{ opacity: 1, width: "100%" }}
                 whileFocus={{ width: [0, "100%"] }}
                 transition={{
                   duration: 0.5,
@@ -197,7 +197,7 @@ function Home() {
             <div className="relative mt-2">
               <motion.input
                 initial={{ opacity: 0, width: 0 }}
-                whileInView={{ opacity: 1, width: "100%" }}
+                animate={{ opacity: 1, width: "100%" }}
                 whileFocus={{ width: [0, "100%"] }}
                 transition={{
                   duration: 0.5,
