@@ -7,6 +7,10 @@ import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { Spinner } from "react-activity";
+// icons imports
+import { GiVote } from "react-icons/gi";
+import { BsClipboardDataFill } from "react-icons/bs";
+import { VscServerProcess } from "react-icons/vsc";
 
 const selection = [
   {
