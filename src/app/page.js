@@ -3,255 +3,148 @@
 import React, { useState } from "react";
 import AnimatedLogo from "@/components/AnimatedLogo";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Spinner } from "react-activity";
 // icons imports
 import { GiVote } from "react-icons/gi";
 import { BsClipboardDataFill } from "react-icons/bs";
 import { VscServerProcess } from "react-icons/vsc";
+import UserLogin from "@/components/Login";
 
 const selection = [
   {
+    id: 1,
     title: "I am here to Vote",
-    icon: "",
+    icon: <GiVote />,
     path: "",
+    content: (
+      <div className="flex flex-col items-center justify-center p-6">
+        <h2 className="text-2xl font-bold mb-4">Voting Section</h2>
+        <p>Proceed to cast your vote securely and conveniently.</p>
+      </div>
+    ),
   },
   {
+    id: 2,
     title: "I am here for results",
-    icon: "",
+    icon: <BsClipboardDataFill />,
     path: "",
+    content: (
+      <div className="flex flex-col items-center justify-center p-6">
+        <h2 className="text-2xl font-bold mb-4">Election Results</h2>
+        <p>View the latest election results and analytics.</p>
+      </div>
+    ),
   },
   {
+    id: 3,
     title: "Election processes",
-    icon: "",
+    icon: <VscServerProcess />,
     path: "",
+    content: <UserLogin />,
   },
 ];
 
 function Home() {
   const router = useRouter();
-  const [present, setPresent] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
-  const [show, setShow] = useState(true);
+  const [selectId, setId] = useState(null);
+  const [showRow, setShowRow] = useState(false);
 
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev);
+  const handleSelect = (id) => {
+    setId(id);
+    setShowRow(true);
   };
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setLoginData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    if (!loginData.email || !loginData.password) {
-      setError("Both email and password are required.");
-      setPresent(true);
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginData.email,
-        password: loginData.password,
-      });
-
-      if (error) {
-        setError(error.message);
-        setPresent(true);
-      } else {
-        const { session } = data;
-        localStorage.setItem("token", session.access_token);
-        router.push("/home/home");
-        setPresent(false);
-      }
-    } catch (err) {
-      setError("An unexpected error occurred. Please try again.");
-      setPresent(true);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // button clicks logics
-  const handleRegister = () => {
-    router.push("/register");
+  // Variants for slide animation
+  const containerVariants = {
+    hidden: { opacity: 0, x: "100%" },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "tween",
+        duration: 0.5,
+      },
+    },
+    exit: {
+      opacity: 0,
+      x: "-100%",
+      transition: {
+        type: "tween",
+        duration: 0.5,
+      },
+    },
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-green-50  justify-center">
-      <div className="flex gap-y-4 flex-col items-center">
-        <AnimatedLogo />
-        <motion.h1
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 1 }}
-          transition={{ delay: 0.4, duration: 0.7 }}
-          className="text-3xl md:text-4xl font-medium font-roboto"
-        >
-          Online Voting System
-        </motion.h1>
-        <motion.p
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 1 }}
-          transition={{ delay: 0.5, duration: 0.7 }}
-          className=""
-        >
-          Lets make it fair and square
-        </motion.p>
-      </div>
-      {/* choice selection */}
-      <div className="flex flex-col mx-auto container items-center mt-5">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-5">
-          {selection?.map((dt, index) => {
-            return (
-              <motion.div
-                initial={{ opacity: 0, y: 100 }}
-                whileInView={{ opacity: 1, y: 1 }}
-                transition={{ delay: 0.2 * index, duration: 0.7 }}
-                key={index}
-                className="md:p-10 p-1 sm:p-5  bg-white ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3"
-              >
-                <h1 className="text-center">{dt?.title}</h1>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-      {/* login section */}
-      <div className="flex md:w-[700px] px-2 w-full flex-col gap-4 mt-10">
-        <div className="">
-          <motion.h1
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 1 }}
-            transition={{ delay: 0.6, duration: 0.7 }}
-            className="font-Raleway text-2xl md:text-3xl"
-          >
-            Sign in
-          </motion.h1>
-        </div>
-        {/* login form */}
-        <form onSubmit={handleLogin} className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 1 }}
-            transition={{ delay: 1, duration: 0.7 }}
-          >
-            <label
-              htmlFor="email"
-              className="block text-sm md:text-md font-medium leading-6 text-gray-900 dark:text-gray-400"
+    <div className="flex flex-col items-center min-h-screen bg-green-50 justify-center overflow-hidden">
+      <div className="flex flex-row w-full items-center">
+        <div className="w-full p-6">
+          <div className="flex gap-y-4 flex-col items-center">
+            <AnimatedLogo />
+            <motion.h1
+              initial={{ opacity: 0, y: 100 }}
+              whileInView={{ opacity: 1, y: 1 }}
+              transition={{ delay: 2, duration: 0.7 }}
+              className="text-3xl md:text-4xl font-medium font-roboto"
             >
-              Email address
-            </label>
-            <div className="mt-2">
-              <motion.input
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "100%" }}
-                whileFocus={{ width: [0, "100%"] }}
-                transition={{
-                  duration: 0.5,
-                  ease: "easeInOut",
-                }}
-                id="email"
-                name="email"
-                onChange={handleInputChange}
-                type="email"
-                required
-                autoComplete="email"
-                className="block w-full px-3 py-2 text-gray-900 border-b-2 border-green-600  bg-inherit  outline-none  placeholder:text-gray-400  sm:text-sm sm:leading-6"
-              />
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 1 }}
-            transition={{ delay: 1.5, duration: 0.7 }}
-          >
-            <div className="flex items-center justify-between">
-              <label
-                htmlFor="password"
-                className="block text-sm md:text-md font-medium leading-6 text-gray-900 dark:text-gray-400"
-              >
-                Password
-              </label>
-              <Link
-                href="#"
-                onClick={() => setShow(false)}
-                className="text-sm md:text-md font-semibold text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot password?
-              </Link>
-            </div>
-            <div className="relative mt-2">
-              <motion.input
-                initial={{ opacity: 0, width: 0 }}
-                animate={{ opacity: 1, width: "100%" }}
-                whileFocus={{ width: [0, "100%"] }}
-                transition={{
-                  duration: 0.5,
-                  ease: "easeInOut",
-                }}
-                id="password"
-                name="password"
-                onChange={handleInputChange}
-                type={showPassword ? "text" : "password"}
-                required
-                autoComplete="current-password"
-                className="block w-full px-3 py-2 text-gray-900 border-b-2 border-green-600  bg-inherit  outline-none placeholder:text-gray-400  sm:text-sm sm:leading-6"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 flex items-center pr-3"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? (
-                  <EyeOff className="w-4 h-4 text-gray-400" />
-                ) : (
-                  <Eye className="w-4 h-4 text-gray-400" />
-                )}
-              </button>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            whileInView={{ opacity: 1, y: 1 }}
-            transition={{ delay: 2, duration: 0.7 }}
-            className="md:flex md:justify-end w-full md:items-end"
-          >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", ease: "easeOut" }}
-              type="submit"
-              className="flex rounded-md w-full md:w-[100px] justify-center bg-green-600 px-5 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700  focus:ring-offset-2 "
+              Online Voting System
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 1 }}
+              transition={{ delay: 2.5, duration: 0.7 }}
+              className=""
             >
-              {loading ? (
-                <div className="flex items-center  justify-center cursor-not-allowed">
-                  <Spinner color="white" size={17} speed={3} animating={true} />
-                </div>
-              ) : (
-                <span className="relative z-10">Sign in</span>
-              )}
-            </motion.button>
+              Lets make it fair and square
+            </motion.p>
+          </div>
+
+          {/* choice selection */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 3, duration: 1 }}
+            className="flex flex-col mx-auto container items-center mt-5"
+          >
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-5">
+              {selection?.map((dt, index) => (
+                <motion.div
+                  onClick={() => handleSelect(dt.id)}
+                  initial={{ opacity: 0, y: 100 }}
+                  whileInView={{ opacity: 1, y: 1 }}
+                  transition={{ delay: 1 * index, duration: 0.7 }}
+                  key={index}
+                  className={`sm:py-5 ${
+                    selectId === dt?.id
+                      ? "text-white font-bold bg-green-600 shadow-md"
+                      : " bg-white/65"
+                  } relative p-1 shadow-md backdrop-blur-sm sm:p-5 items-center ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3`}
+                >
+                  <div className="sm:flex hidden text-2xl">{dt?.icon}</div>
+                  <h1 className="text-center">{dt?.title}</h1>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
-        </form>
+        </div>
+
+        {/* Animated content section */}
+        <AnimatePresence>
+          {showRow && selectId && (
+            <motion.div
+              key="selected-content"
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="w-full border-l border-green-300"
+            >
+              {selection.find((item) => item.id === selectId)?.content}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
