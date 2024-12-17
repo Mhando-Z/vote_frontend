@@ -79,13 +79,13 @@ function Home() {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-green-50 justify-center overflow-hidden">
-      <div className="flex flex-row w-full items-center">
+      <div className="flex flex-col md:flex-row  w-full items-center">
         <div className="w-full p-6">
           <div className="flex gap-y-4 flex-col items-center">
             <AnimatedLogo />
             <motion.h1
               initial={{ opacity: 0, y: 100 }}
-              whileInView={{ opacity: 1, y: 1 }}
+              animate={{ opacity: 1, y: 1 }}
               transition={{ delay: 2, duration: 0.7 }}
               className="text-3xl md:text-4xl font-medium font-roboto"
             >
@@ -93,7 +93,7 @@ function Home() {
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 1 }}
+              animate={{ opacity: 1, y: 1 }}
               transition={{ delay: 2.5, duration: 0.7 }}
               className=""
             >
@@ -104,7 +104,7 @@ function Home() {
           {/* choice selection */}
           <motion.div
             initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 3, duration: 1 }}
             className="flex flex-col mx-auto container items-center mt-5"
           >
@@ -113,16 +113,16 @@ function Home() {
                 <motion.div
                   onClick={() => handleSelect(dt.id)}
                   initial={{ opacity: 0, y: 100 }}
-                  whileInView={{ opacity: 1, y: 1 }}
+                  animate={{ opacity: 1, y: 1 }}
                   transition={{ delay: 1 * index, duration: 0.7 }}
                   key={index}
                   className={`sm:py-5 ${
                     selectId === dt?.id
                       ? "text-white font-bold bg-green-600 shadow-md"
                       : " bg-white/65"
-                  } relative p-1 shadow-md backdrop-blur-sm sm:p-5 items-center ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3`}
+                  } relative  shadow-md backdrop-blur-sm p-5 items-center ring-1 ring-green-300 rounded cursor-pointer flex flex-col gap-3`}
                 >
-                  <div className="sm:flex hidden text-2xl">{dt?.icon}</div>
+                  <div className="text-2xl">{dt?.icon}</div>
                   <h1 className="text-center">{dt?.title}</h1>
                 </motion.div>
               ))}

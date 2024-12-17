@@ -184,7 +184,7 @@ const UserRegister = ({ handleRegistration }) => {
         <div className="mb-6 sm:mx-auto sm:w-full">
           <motion.h1
             initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 1 }}
+            animate={{ opacity: 1, y: 1 }}
             transition={{ duration: 0.7 }}
             className="text-2xl dark:text-gray-300 font-Raleway md:text-3xl"
           >

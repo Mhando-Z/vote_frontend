@@ -98,7 +98,7 @@ export default function UserLogin() {
   return (
     <div className="flex flex-row overflow-y-hidden">
       {Register ? (
-        <div className="flex dark:bg-gradient-to-t dark:from-transparent min-h-screen flex-1 flex-col relative justify-center px-6 py-12 lg:px-8">
+        <div className="flex dark:bg-gradient-to-t dark:from-transparent md:min-h-screen flex-1 flex-col relative justify-center px-6 py-12 lg:px-8">
           {Notify !== true ? (
             <UserRegister handleRegistration={handleRegistration} />
           ) : (
@@ -111,7 +111,7 @@ export default function UserLogin() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeInOut", type: "spring" }}
-          className="flex bg-gradient-to-t dark:bg-gradient-to-t dark:from-transparent  via-transparent   min-h-screen flex-1 flex-col relative justify-center px-6 py-12 lg:px-8"
+          className="flex bg-gradient-to-t dark:bg-gradient-to-t dark:from-transparent  via-transparent   md:min-h-screen flex-1 flex-col relative justify-center px-6 py-12 lg:px-8"
         >
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
             {/* <Image className="w-auto mx-auto h-14" src={logo} alt="Hat logo" /> */}
@@ -120,7 +120,7 @@ export default function UserLogin() {
               <div className="mt-10">
                 <motion.h1
                   initial={{ opacity: 0, y: 100 }}
-                  whileInView={{ opacity: 1, y: 1 }}
+                  animate={{ opacity: 1, y: 1 }}
                   transition={{ duration: 0.5 }}
                   className="text-2xl dark:text-gray-300 font-Raleway md:text-3xl"
                 >
