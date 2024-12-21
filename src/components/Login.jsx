@@ -4,10 +4,11 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Spinner } from "react-activity";
 import { Eye, EyeOff } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import UserRegister from "./UserRegister";
 import Notifier from "./Notifier";
+import axiosInstance from "@/context/axiosInstance";
+import { redirect } from "next/navigation";
 
 export default function UserLogin() {
   const [value, setValue] = useState(0);
@@ -25,6 +26,8 @@ export default function UserLogin() {
 
   const handleRegistration = () => {
     setRegister(!Register);
+    setPresent(false);
+    setLoading(false);
   };
 
   const [Login, setData] = useState({
@@ -33,37 +36,33 @@ export default function UserLogin() {
   });
 
   // Function to login user
-  //   async function getUser(Login) {
-  //     try {
-  //       const { data } = await axiosInstance?.post(
-  //         "hat-users/users/login/",
-  //         Login
-  //       );
-  //       const { access } = data;
-  //       try {
-  //         // Save token in cookies
-  //         Cookies.set("token", access, { expires: 1 }); // Token will expire in 15 days
-  //         // Decode token to get user details
-  //         const user = jwtDecode(access);
-  //         // Redirect based on user type
-  //         if (user.is_staff === true) {
-  //           //   router.push("welcomepage");
-  //         }
-  //         if (user?.is_staff === false) {
-  //           //   router.push("welcomepage");
-  //         }
-  //         setPresent(false);
-  //       } catch (error) {
-  //         console.error("Error saving token:", error);
-  //       }
-  //     } catch (ex) {
-  //       setError(
-  //         ex.response?.data?.detail ||
-  //           "Server Error. Please contact our administrator for support."
-  //       );
-  //       setPresent(true);
-  //     }
-  //   }
+  async function getUser(Login) {
+    try {
+      const { data } = await axiosInstance?.post(
+        "vote-users/users/login/",
+        Login
+      );
+      const { access } = data;
+      try {
+        // Save token in cookies
+        Cookies.set("token", access, { expires: 1 }); // Token will expire in 1 day
+        // Decode token to get user details
+        const user = jwtDecode(access);
+
+        redirect("welcomePage/");
+
+        setPresent(false);
+      } catch (error) {
+        console.error("Error saving token:", error);
+      }
+    } catch (ex) {
+      setError(
+        ex.response?.data?.detail ||
+          "Server Error. Please contact our administrator for support."
+      );
+      setPresent(true);
+    }
+  }
 
   // Handle Login button click
   const handleLogin = () => {
@@ -91,10 +90,6 @@ export default function UserLogin() {
     e.preventDefault();
   };
 
-  const handleBack = () => {
-    router.push("/");
-  };
-
   return (
     <div className="flex flex-row overflow-y-hidden">
       {Register ? (
@@ -114,9 +109,7 @@ export default function UserLogin() {
           className="flex bg-gradient-to-t dark:bg-gradient-to-t dark:from-transparent  via-transparent   md:min-h-screen flex-1 flex-col relative justify-center px-6 py-12 lg:px-8"
         >
           <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-            {/* <Image className="w-auto mx-auto h-14" src={logo} alt="Hat logo" /> */}
-
-            {present !== true ? (
+            {present !== true && loading !== true ? (
               <div className="mt-10">
                 <motion.h1
                   initial={{ opacity: 0, y: 100 }}

@@ -3,44 +3,45 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "react-toastify";
-import { Dots, Spinner } from "react-activity";
+import { Spinner } from "react-activity";
 import { CheckCircle, Mail, User, RefreshCw } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import { Eye } from "lucide-react";
+import axiosInstance from "@/context/axiosInstance";
 
 const MotionCheckCircle = motion(CheckCircle);
 
 export const Notifier = ({ data, setView }) => {
   const [isLoading, setIsLoading] = useState(false);
 
-  // async function resendVerificationEmail(email) {
-  //   setIsLoading(true);
+  async function resendVerificationEmail(email) {
+    setIsLoading(true);
 
-  //   try {
-  //     const response = await axiosInstance.post(
-  //       "/hat-users/resend-email-verification/",
-  //       { email }
-  //     );
+    try {
+      const response = await axiosInstance.post(
+        "/vote-users/resend-email-verification/",
+        { email }
+      );
 
-  //     if (response.status === 200) {
-  //       toast.success("Verification email resent. Please check your inbox.");
-  //     } else {
-  //       toast.error(response.data.detail || "Unexpected error. Try again.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error resending verification email:", error);
-  //     if (error.response) {
-  //     } else if (error.request) {
-  //       // Request made but no response received
-  //       toast.error("No response from the server. Please check your network.");
-  //     } else {
-  //       // Something else went wrong
-  //       toast.error("Error: " + error.message);
-  //     }
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // }
+      if (response.status === 200) {
+        toast.success("Verification email resent. Please check your inbox.");
+      } else {
+        toast.error(response.data.detail || "Unexpected error. Try again.");
+      }
+    } catch (error) {
+      console.error("Error resending verification email:", error);
+      if (error.response) {
+      } else if (error.request) {
+        // Request made but no response received
+        toast.error("No response from the server. Please check your network.");
+      } else {
+        // Something else went wrong
+        toast.error("Error: " + error.message);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   const handleClick = (email) => {
     resendVerificationEmail(email);
@@ -154,7 +155,7 @@ const UserRegister = ({ handleRegistration }) => {
     setLoading(true);
     setError([]);
     try {
-      await axiosInstance.post("hat-users/register/", formData);
+      await axiosInstance.post("vote-users/register/", formData);
       // Save generated token from back-end to local storage
       setLoading(false);
       setView(true); // Display the Notifier component

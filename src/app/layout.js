@@ -2,6 +2,7 @@ import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
 import "react-activity/dist/library.css";
 import { ToastContainer } from "react-toastify";
+import { UserProvider } from "@/context/UserContext";
 
 export const metadata = {
   title: "Vote",
@@ -24,7 +25,7 @@ export default function RootLayout({ children }) {
           pauseOnHover
           theme="colored"
         />
-        {children}
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
